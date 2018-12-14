@@ -48,30 +48,19 @@ class _SearchState extends State<SearchList> {
       _error = null;
       _results = List();
     });
-    var map = [{
-    "city": "Amsterdam",
-    'address':"Flangomn",
-    "lat":26.820553,
-    'lng':30.802498
-  },
-  {
-    "city": "droman",
-    'address':"valro",
-    "lat":26.820553,
-    'lng':30.802498
-  },
-    {"city": "Loral",
-    'address':"markov",
-    "lat":26.820553,
-    'lng':30.802498
-  }
-  ];
+    var map = [{"id":48,"title":"Helgelandskysten","lng":12.63376,"lat":66.02219},
+    {"id":46,"title":"Tysfjord","lng":16.50279,"lat":68.03515},
+    {"id":44,"title":"Sledehunds-ekspedisjon","lng":7.53744,"lat":60.08929},
+    {"id":43,"title":"Amundsens sydpolferd","lng":11.38411,"lat":62.57481},
+    {"id":39,"title":"Vikingtokt","lng":6.96781,"lat":60.96335},
+    {"id":6,"title":"Tungtvann- sabotasjen","lng":8.49139,"lat":59.87111}
+    ];
     
     if (this._searchQuery.text == query && this.mounted) {
       setState(() {
         _isSearching = false;
         if (map != null) {
-          _results = map.where((p)=>p['address'].toString().contains(query)).toList();
+          _results = map.where((p)=>p['title'].toString().contains(query)).toList();
         } else {
           _error = 'Error searching';
         }
@@ -111,13 +100,13 @@ class _SearchState extends State<SearchList> {
     } else if (_searchQuery.text.isEmpty) {
       return CenterTitle('Begin Search by typing on search bar');
     } else {
-      return ListView.builder(
+      return  ListView.builder(
           padding: EdgeInsets.symmetric(vertical: 8.0),
           itemCount: _results.length,
           itemBuilder: (BuildContext context, int index) {
             return ListTile(
-              title: Text(_results[index]['city']),
-              subtitle: Text(_results[index]['address']),
+              title: Text(_results[index]['title']),
+              subtitle: Text(_results[index]['lat'].toString() + "  "+ _results[index]['lng'].toString()),
               onTap: (){
                 print(_results[index]['lat']);
                 print(_results[index]['lng']);
@@ -126,8 +115,7 @@ class _SearchState extends State<SearchList> {
                   builder: (context)=>MapsDemo(
                     lat:_results[index]['lat'],
                     lng:_results[index]['lng'],
-                    address:_results[index]['address'],
-                    city:_results[index]['city']
+
                   )
                 ));
               },
@@ -154,3 +142,24 @@ class CenterTitle extends StatelessWidget {
         ));
   }
 }
+// ListView.builder(
+//           padding: EdgeInsets.symmetric(vertical: 8.0),
+//           itemCount: _results.length,
+//           itemBuilder: (BuildContext context, int index) {
+//             return ListTile(
+//               title: Text(_results[index]['title']),
+//               subtitle: Text(_results[index]['lat'].toString() + "  "+ _results[index]['lng'].toString()),
+//               onTap: (){
+//                 print(_results[index]['lat']);
+//                 print(_results[index]['lng']);
+
+//                 Navigator.of(context).push(MaterialPageRoute(
+//                   builder: (context)=>MapsDemo(
+//                     lat:_results[index]['lat'],
+//                     lng:_results[index]['lng'],
+
+//                   )
+//                 ));
+//               },
+//             );
+//           })
